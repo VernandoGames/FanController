@@ -49,9 +49,17 @@ int main()
 	gpio_init(PICO_DEFAULT_LED_PIN);
 	gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
+	long last_led_update = get_absolute_time();
+
     while (true) {
 		gpio_put(0, false);
-		gpio_put(PICO_DEFAULT_LED_PIN, !gpio_get(PICO_DEFAULT_LED_PIN));
+		sleep_ms(10);
+		long currentTime = get_absolute_time();
+		if (currentTime - last_led_update > 100000) {
+			last_led_update = currentTime;
+			//printf("%s", currentTime);
+			gpio_put(PICO_DEFAULT_LED_PIN, !gpio_get(PICO_DEFAULT_LED_PIN));
+		}
 		
 		bool high_enable = false;
 		bool low_enable = false;
