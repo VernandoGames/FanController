@@ -52,7 +52,7 @@ int main()
 	long last_led_update = get_absolute_time();
 
     while (true) {
-		gpio_put(0, false);
+		//gpio_put(0, false);
 		sleep_ms(10);
 		long currentTime = get_absolute_time();
 		if (currentTime - last_led_update > 100000) {
@@ -82,6 +82,10 @@ int main()
 		// Handle low cut ins
 		if (ac_press > ac_press_low_cutin) low_enable = true;
 		if (engine_temp > engine_temp_low_cutin) low_enable = true;
+
+		high_enable = engine_temp_high_output or ac_press_high_output;
+
+		if (high_enable) low_enable = true;
 
 		gpio_put(0, !low_enable);
 		gpio_put(1, !high_enable);
